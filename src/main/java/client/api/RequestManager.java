@@ -101,11 +101,10 @@ public final class RequestManager {
     public static Response postJson(final String endpoint, JSONObject body) {
         String finalEndPoint = Variables.Url + endpoint;
         RestAssured.useRelaxedHTTPSValidation();
-
+        /*System.out.println(body.toString());
         System.out.println("WE NEED A PROPER RESPONSE HERE  "+given().contentType(ContentType.JSON)
-                .body(body.toString()).when().post(finalEndPoint).then().toString());
-
-
+                .body(body.toString()).when().post(finalEndPoint).body().prettyPrint());
+*/
         return given().contentType(ContentType.JSON)
                 .body(body.toString()).when().post(finalEndPoint);
     }

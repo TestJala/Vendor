@@ -1,8 +1,12 @@
 package utils;
 
+import cucumber.api.DataTable;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import org.testng.Assert;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,5 +50,14 @@ public class Helper {
     public Map<String, String> getStorageMap() {
         return storageMap;
     }
-}
 
+    public void validateResponseBody(DataTable table){
+        JsonPath jsonPathEvaluator = response.jsonPath();
+        for (List<String> data:table.raw()) {
+            String ExpectedField = data.get(0);
+            String ExpectedValue = data.get(1);
+            String field =  jsonPathEvaluator.get(ExpectedField).toString();
+            Assert.assertTrue(field.equalsIgnoreCase(ExpectedValue));
+        }
+    }
+}
