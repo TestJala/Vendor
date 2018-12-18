@@ -18,6 +18,7 @@ public class AssertionSteps {
 
     @Then("^The response status code should be (\\d+)$")
     public void theStatusCodeShouldBe(final int status) {
+        System.out.println(helper.getResponse().body().prettyPrint());
         assertEquals(helper.getResponse().getStatusCode(), status);
     }
 
