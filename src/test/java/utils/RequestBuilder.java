@@ -29,6 +29,7 @@ public class RequestBuilder {
         for (Map.Entry<String, String> entry : table.entrySet()) {
             body.put(entry.getKey(),entry.getValue());
         }
+        System.out.println(body);
         return body;
     }
 }

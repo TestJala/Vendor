@@ -5,6 +5,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.testng.Assert;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 /**
@@ -15,6 +16,7 @@ public class Helper {
     private Map<String, String> storageMap;
     private Response response;
     private User user = User.getUser();
+    private Event event=Event.getEvent();
 
     public Helper() {
         storageMap = new HashMap<>();
@@ -102,7 +104,21 @@ public class Helper {
                 map.replace(field, user.getUserField("userName"));
             }
         }
-        System.out.println(map);
+        //System.out.println(map);
         return map;
+    }
+
+    public void setEvent(DataTable requestData) {
+        for (List<String> data:requestData.raw()) {
+            String column = data.get(0);
+            for (Field field : event.getClass().getDeclaredFields()) {
+                String[] columnName = field.toString().split("\\.", 10);
+                if (!java.lang.reflect.Modifier.isStatic(field.getModifiers())) {
+                    if (columnName[4].equalsIgnoreCase(column))
+                        event.setEventField(columnName[4], data.get(1));
+                }
+            }
+        }
+        System.out.println(event);//check if event field are correctly assigned
     }
 }

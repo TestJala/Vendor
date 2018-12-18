@@ -37,10 +37,19 @@ public class RequestSteps {
         helper.setUserIdUsername(result);
     }
 
+    @Given("^A created event with the following values$")
+    public void aCreatedEventWithTheFollowingValues(final DataTable requestData){
+        String endpoint = "/api/vmEvent/create";
+        JSONObject body = RequestBuilder.build(requestData);
+        Response result=RequestManager.postJson(endpoint, body);
+        helper.setEvent(requestData);
+    }
+
     @And("^update user password with the following values$")
     public void updateUserPasswordWithTheFollowingValues(final Map<String, String> requestData){
         String endpoint = "/api/vmRegistration/updatePassword";
         Map<String,String> table=helper.AddUserIdToTable(requestData);
+
         JSONObject body = RequestBuilder.build(table);
         RequestManager.postJson(endpoint, body);
         helper.setUserPasswordAndPin(requestData);
