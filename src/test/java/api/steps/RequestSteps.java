@@ -2,11 +2,14 @@ package api.steps;
 
 import client.api.RequestManager;
 import cucumber.api.DataTable;
+import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 import io.restassured.response.Response;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import utils.Helper;
 import utils.RequestBuilder;
 import utils.User;
@@ -28,6 +31,20 @@ public class RequestSteps {
         helper.setResponse(response);
     }
 
+    @Given("^A POST request to \"([^\"]*)\" endpoint with the following JSON$")
+    public void aPOSTRequestToEndpointWithTheFollowingJSON(String endpoint, String jsonString){
+        JSONParser parser = new JSONParser();
+        JSONObject json = null;
+        try {
+            json = (JSONObject) parser.parse(jsonString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        response = RequestManager.postJson(endpoint,json);
+        helper.setResponse(response);
+    }
+
     @Given("^A created user with the following values$")
     public void aCreatedUserWithTheFollowingValues(final DataTable requestData){
         String endpoint = "/api/vmRegistration/createUser";
@@ -43,6 +60,25 @@ public class RequestSteps {
         JSONObject body = RequestBuilder.build(requestData);
         Response result=RequestManager.postJson(endpoint, body);
         helper.setEvent(requestData);
+        helper.setEvent(result);
+    }
+
+    @Given("^A created work item with the following values$")
+    public void aCreatedWorkItemWithTheFollowingValues(final DataTable requestData){
+        String endpoint = "/api/vmUnit/createWorkItem";
+        JSONObject body = RequestBuilder.build(requestData);
+        Response result=RequestManager.postJson(endpoint, body);
+        helper.setWorkItem(requestData);
+        helper.setWorkItem(result);
+    }
+
+    @Given("^A created repair with the following values$")
+    public void aCreatedRepairWithTheFollowingValues(final DataTable requestData){
+        String endpoint = "/api/vmUnit/createRepair";
+        JSONObject body = RequestBuilder.build(requestData);
+        Response result=RequestManager.postJson(endpoint, body);
+        helper.setRepair(requestData);
+        helper.setRepair(result);
     }
 
     @And("^update user password with the following values$")

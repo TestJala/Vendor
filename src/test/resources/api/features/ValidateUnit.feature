@@ -1,7 +1,7 @@
 @Incomplete
-Feature:Get Event Detail
+Feature:Validate Unit
 
-  Scenario: Get Event Detail - /api/vmEvent/getDetail
+  Scenario: Validate Unit - /api/vmUnit/validate
     Given A created event with the following values
       | address               | 100 Main St.                        |
       | city                  | Cherryville                         |
@@ -15,8 +15,16 @@ Feature:Get Event Detail
       | vin                   |                                     |
       | customerId            | 1                                   |
       | eventType             | 4                                   |
-
-#    Then The response status code should be 200
-#    And response includes the following in any order
-#      | result       | true |
-#      | errorMessage |      |
+    Given A POST request to "/api/vmUnit/validate" endpoint with the following values
+      | eventNo        | &eventNo |
+      | unitIdentifier |          |
+      | userId         | 1        |
+      | customerId     | 1        |
+    Then The response status code should be 200
+    And response includes the following in any order
+      | result       | true |
+      | errorMessage |      |
+      | statusCode   | 0    |
+      | unitNo       |      |
+      | VIN          |      |
+      | workItems    |      |

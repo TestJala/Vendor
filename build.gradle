@@ -20,5 +20,6 @@ dependencies {
     testCompile group: 'io.cucumber', name: 'cucumber-testng', version: '2.4.0'
     compile group: 'io.appium', name: 'java-client', version:'6.1.0'
     compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
+    testCompile group: 'org.skyscreamer', name: 'jsonassert', version: '1.5.0'
 
 }

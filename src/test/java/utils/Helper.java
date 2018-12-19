@@ -1,5 +1,6 @@
 package utils;
 
+import client.api.Variables;
 import cucumber.api.DataTable;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -17,6 +18,8 @@ public class Helper {
     private Response response;
     private User user = User.getUser();
     private Event event=Event.getEvent();
+    private WorkItem workItem=WorkItem.getWorkItem();
+    private Repair repair=Repair.getRepair();
 
     public Helper() {
         storageMap = new HashMap<>();
@@ -103,6 +106,21 @@ public class Helper {
             if (requestData.get(field).equalsIgnoreCase("&username")) {
                 map.replace(field, user.getUserField("userName"));
             }
+            if (requestData.get(field).equalsIgnoreCase("&eventNo")) {
+                map.replace(field, event.getEventField("eventNo"));
+            }
+            if (requestData.get(field).equalsIgnoreCase("&signatureBase64")) {
+                map.replace(field, Variables.signatureBase64);
+            }
+            if (requestData.get(field).equalsIgnoreCase("&base64Image")) {
+                map.replace(field, Variables.base64Image);
+            }
+            if (requestData.get(field).equalsIgnoreCase("&workItemId")) {
+                map.replace(field, workItem.getWorkItemField("workItemId"));
+            }
+            if (requestData.get(field).equalsIgnoreCase("&repairId")) {
+                map.replace(field, repair.getRepairField("repairId"));
+            }
         }
         //System.out.println(map);
         return map;
@@ -119,6 +137,47 @@ public class Helper {
                 }
             }
         }
-        System.out.println(event);//check if event field are correctly assigned
+    }
+
+    public void setEvent(Response result) {
+        JsonPath jsonPathEvaluator = result.jsonPath();
+        event.setEventField("eventNo",jsonPathEvaluator.get("eventNo").toString());
+        System.out.println("eventNo "+event.getEventField("eventNo")+" eventType "+event.getEventField("eventType")+" customerId "+event.getEventField("customerId"));
+    }
+
+    public void setWorkItem(DataTable requestData) {
+        for (List<String> data:requestData.raw()) {
+            String column = data.get(0);
+            for (Field field : workItem.getClass().getDeclaredFields()) {
+                String[] columnName = field.toString().split("\\.", 10);
+                if (!java.lang.reflect.Modifier.isStatic(field.getModifiers())) {
+                    if (columnName[4].equalsIgnoreCase(column))
+                        workItem.setWorkItemField(columnName[4], data.get(1));
+                }
+            }
+        }
+    }
+
+    public void setWorkItem(Response result) {
+        JsonPath jsonPathEvaluator = result.jsonPath();
+        workItem.setWorkItemField("workItemId",jsonPathEvaluator.get("workItemId").toString());
+    }
+
+    public void setRepair(DataTable requestData) {
+        for (List<String> data:requestData.raw()) {
+            String column = data.get(0);
+            for (Field field : repair.getClass().getDeclaredFields()) {
+                String[] columnName = field.toString().split("\\.", 10);
+                if (!java.lang.reflect.Modifier.isStatic(field.getModifiers())) {
+                    if (columnName[4].equalsIgnoreCase(column))
+                        repair.setRepairField(columnName[4], data.get(1));
+                }
+            }
+        }
+    }
+
+    public void setRepair(Response result) {
+        JsonPath jsonPathEvaluator = result.jsonPath();
+        repair.setRepairField("repairId",jsonPathEvaluator.get("repairId").toString());
     }
 }

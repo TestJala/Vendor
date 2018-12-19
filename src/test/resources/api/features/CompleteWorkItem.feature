@@ -5,7 +5,7 @@ Feature:Complete Work Item
       | unitNo               | 123456789                |
       | VIN                  | 1HGCM82633A004352        |
       | workItemId           | 1                        |
-      | signatureBase64      |                          |
+      | signatureBase64      | &signatureBase64         |
       | signatureImageType   | png                      |
       | userId               | 1                        |
       | unitReadyToRoll      | False                    |
