@@ -1,6 +1,6 @@
 Feature:Create Event
 
-  Scenario: Create Event - /api/vmEvent/create
+  Scenario Outline: Create Event - /api/vmEvent/create
     Given A POST request to "/api/vmEvent/create" endpoint with the following values
       | address               | 100 Main St.                        |
       | city                  | Cherryville                         |
@@ -13,8 +13,15 @@ Feature:Create Event
       | unitNo                |                                     |
       | vin                   |                                     |
       | customerId            | 1                                   |
-      | eventType             | 4                                   |
+      | eventType             | <eventTypeId>                       |
     Then The response status code should be 200
     And response includes the following in any order
       | result       | true |
       | errorMessage |      |
+
+    Examples:
+      | typeName   | eventTypeId |
+      | Tire       | 1           |
+      | Towing     | 2           |
+      | Mechanical | 3           |
+      | Yard Check | 4           |

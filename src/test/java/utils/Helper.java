@@ -7,6 +7,8 @@ import io.restassured.response.Response;
 import org.testng.Assert;
 
 import java.lang.reflect.Field;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -20,6 +22,8 @@ public class Helper {
     private Event event=Event.getEvent();
     private WorkItem workItem=WorkItem.getWorkItem();
     private Repair repair=Repair.getRepair();
+    LocalDateTime now = LocalDateTime.now();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
     public Helper() {
         storageMap = new HashMap<>();
@@ -62,6 +66,7 @@ public class Helper {
             String ExpectedValue = data.get(1);
             if(ExpectedValue.startsWith("&userId"))ExpectedValue=user.getUserField("userId");
             if(ExpectedValue.startsWith("&username"))ExpectedValue=user.getUserField("userName");
+            if(ExpectedValue.startsWith("&TODAY"))ExpectedValue=now.format(formatter);
             String field =  jsonPathEvaluator.get(ExpectedField).toString();
             Assert.assertTrue(field.equalsIgnoreCase(ExpectedValue));
         }
