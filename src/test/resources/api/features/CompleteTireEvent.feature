@@ -3,15 +3,14 @@ Feature:Complete Tire Event
 
   Scenario: Complete Tire Event - /api/vmEvent/completeTireEvent
     Given A POST request to "/api/vmEvent/completeTireEvent" endpoint with the following values
-      | eventNo              | 4386934                  |
+      | eventNo              | 4341098                  |
       | position             | Left                     |
-      | dotOff               |                          |
-      | dotOn                |                          |
+      | dotOff               | 56                       |
+      | dotOn                | 65                       |
       | mileageHubRead       | 81,276                   |
-      | drNo                 |                          |
+      | drNo                 | 56                       |
       | reasonForFailure     | Old Tire                 |
       | notes                | Replaced left front tire |
-
       | unitReadyToRoll      | False                    |
       | reasonNotReadyToRoll | Still needs another tire |
       | userId               | 1                        |

@@ -1,4 +1,3 @@
-@Test
 Feature:Deny Repair Request (For FleetNet Only)
 
   Scenario: Deny Repair Request - /api/vmUnit/denyRepair
